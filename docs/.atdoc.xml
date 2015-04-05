@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documentation include-internal-symbols-p="yes" index-title="No Title" css="index.css" heading="No Heading"><package name="bytecurry.mocks" id="bytecurry.mocks"><documentation-string>Package to provide tools to mock functions
+in common lisp unit tests.<break/>
+Provides WITH-MOCKED-FUNCTIONS, which acts like FLET or LABELS, but shadows functions
+in the global scope, so that the function bindings are available outside of thelexical scope of the body. See docstring for more information.</documentation-string><external-symbols><macro-definition id="bytecurry.mocks__fun__with-mocked-functions" name="with-mocked-functions" package="bytecurry.mocks"><lambda-list><elt>bindings</elt><elt>&amp;body</elt><elt>body</elt></lambda-list><documentation-string>Execute BODY with some functions mocked up.<break/>
+BINDINGS is a list of function bindings, similar to those in FLET or LABELS.
+Before executing BODY, the bindings are used to replace the definitions of functions,
+and after BODY has finished, the original function definitions are restored.<break/>
+You can use this macro to mock funtions for unit tests. For example, if function A calls
+function B, you can replace the definition of B while testing A, to isolate the test on just
+the behavior of A.<break/>
+There are two things to note when using this macro:
+1. You can't mock functions in a locked package (such as CL)
+2. The compiler may inline function calls, in which case changing the definition will have   no effect.</documentation-string></macro-definition><macro-definition id="bytecurry.mocks__fun__with-added-methods" name="with-added-methods" package="bytecurry.mocks"><lambda-list><elt>bindings</elt><elt>&amp;body</elt><elt>body</elt></lambda-list><documentation-string>Execute BODY with some extra methods.<break/>
+This works similarly to WITH-MOCKED-FUNCTIONS. But defines methods instead of functions.
+The bindings should look like DEFMETHOD definitions without the defmethod symbol.<break/>
+One particularly useful scenario is to mock up an instance of a class by using eql specializersfor a local variable.</documentation-string></macro-definition></external-symbols><internal-symbols><function-definition id="bytecurry.mocks__fun___let-expr" name="%let-expr" package="bytecurry.mocks"><lambda-list><elt>names</elt></lambda-list><documentation-string>Get the let binding for a mock function binding</documentation-string></function-definition><function-definition id="bytecurry.mocks__fun___setf-for-binding" name="%setf-for-binding" package="bytecurry.mocks"><lambda-list><elt>binding</elt></lambda-list><documentation-string>Store the mocked function.</documentation-string></function-definition><function-definition id="bytecurry.mocks__fun___get-binding-names" name="%get-binding-names" package="bytecurry.mocks"><lambda-list><elt>binding</elt></lambda-list></function-definition><function-definition id="bytecurry.mocks__fun___setf-for-original" name="%setf-for-original" package="bytecurry.mocks"><lambda-list><elt>names</elt></lambda-list></function-definition></internal-symbols></package></documentation>
