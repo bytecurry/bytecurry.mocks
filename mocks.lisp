@@ -50,7 +50,9 @@ This works similarly to WITH-MOCKED-FUNCTIONS. But defines methods instead of fu
 The bindings should look like DEFMETHOD definitions without the defmethod symbol.
 
 One particularly useful scenario is to mock up an instance of a class by using eql specializers
-for a local variable."
+for a local variable.
+
+For now, it only supports adding new methods, not replacing existing methods, since it doesn't restored the previous method. (mostly because I don't know a good way to extract the specifiers from the definition form.)"
   (let ((temp-names (loop for binding in bindings
                        collect (gensym))))
     `(let (,@(loop for temp-name in temp-names
