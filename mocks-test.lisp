@@ -9,8 +9,8 @@
 
 (def-suite :bytecurry.mocks)
 
-(def-suite :bytecurry.mocks/with-mocked-functions :in :bytecurry.mocks.test)
-(def-suite :bytecurry.mocks/with-added-methods :in :bytecurry.mocks.test)
+(def-suite :bytecurry.mocks/with-mocked-functions :in :bytecurry.mocks)
+(def-suite :bytecurry.mocks/with-added-methods :in :bytecurry.mocks)
 
 (in-suite :bytecurry.mocks/with-mocked-functions)
 

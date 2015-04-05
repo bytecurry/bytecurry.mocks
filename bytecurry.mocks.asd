@@ -20,4 +20,4 @@
     :depends-on (:bytecurry.mocks :fiveam)
     :components ((:file "mocks-test"))
     :perform (test-op (o c)
-                      (symbol-call '#:fiveam '#:run! :bytecurry.mocks.test)))
+                      (symbol-call '#:fiveam '#:run! :bytecurry.mocks)))
