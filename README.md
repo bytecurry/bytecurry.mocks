@@ -48,4 +48,4 @@ method outside the scope of `with-added-methods`.
 
 For more information see the documentation strings.
 
-Reference Manual to come as some later point.
+The API manual is available [here](http://bytecurry.github.io/bytecurry.mocks/docs/).

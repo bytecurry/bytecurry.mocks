@@ -26,4 +26,4 @@
 ** More Info
    For more information see the documentation strings.
 
-   Reference Manual to come as some later point.
+   The API manual is available [[http://bytecurry.github.io/bytecurry.mocks/docs/][here]].
