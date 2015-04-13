@@ -8,9 +8,14 @@
     :author "Thayne McCombs <astrothayne@gmail.com>"
     :version "1.0.0"
     :license "MIT"
+    :defsystem-depends-on (:bytecurry.asdf-ext)
     :serial t
     :components ((:file "package")
-                 (:file "mocks"))
+                 (:file "mocks")
+                 (:atdoc-html "docs"
+                              :packages :bytecurry.mocks
+                              :single-page-p t
+                              :css :blue-serif))
     :in-order-to ((test-op (test-op :bytecurry.mocks/test))))
 
 (defsystem #:bytecurry.mocks/test
