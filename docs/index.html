@@ -1,11 +1,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>No Title</title><link rel="stylesheet" type="text/css" href="index.css"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body><div id="header"><table cellspacing="0" cellpadding="0" width="100%"><tr><td valign="center">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>bytecurry.mocks</title><link rel="stylesheet" type="text/css" href="index.css"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body><div id="header"><table cellspacing="0" cellpadding="0" width="100%"><tr><td valign="center">
 		  
-	      <b> No Heading</b></td><td valign="center" align="right"><b>API documentation</b></td></tr></table></div><div class="main"><div class="padded">
-	Index of packages:
-      </div><table cellspacing="0" cellpadding="0"><tr><td valign="top" width="60%"><div class="padded"><h2 class="page-title"><a href="pages/bytecurry.mocks.html">
-		  Package
-		  bytecurry.mocks</a></h2><div style="left: 100px"><div class="indent">Package to provide tools to mock functions
+	      <b> bytecurry.mocks</b></td><td valign="center" align="right"><b>API documentation</b></td></tr></table></div><div class="main"><div id="sp-about-packages"><p><i>About bytecurry.mocks:</i><div class="indent">Package to provide tools to mock functions
 in common lisp unit tests.<br><br>
 Provides WITH-MOCKED-FUNCTIONS, which acts like FLET or LABELS, but shadows functions
-in the global scope, so that the function bindings are available outside of thelexical scope of the body. See docstring for more information.</div><div class="indent"></div></div></div></td><td valign="top"><h3><a name="index"></a>Exported Symbol Index</h3><table cellspacing="0" cellpadding="0"><tr><td valign="top" align="right" nowrap><span class="nonlink"><tt><span style="color: #777777">bytecurry.mocks:</span></tt></span></td><td valign="top"><a href="pages/bytecurry.mocks__fun__with-added-methods.html"><tt>with-added-methods</tt></a>, macro</td></tr><tr><td valign="top" align="right" nowrap><span class="nonlink"><tt><span style="color: #777777">bytecurry.mocks:</span></tt></span></td><td valign="top"><a href="pages/bytecurry.mocks__fun__with-mocked-functions.html"><tt>with-mocked-functions</tt></a>, macro</td></tr></table></td></tr></table></div></body></html>
+in the global scope, so that the function bindings are available outside of thelexical scope of the body. See docstring for more information.</div></p></div><h3>Other macros in bytecurry.mocks</h3><a name="bytecurry.mocks__fun__with-added-methods"></a><div class="sp-lambda-list"><b>Macro with-added-methods</b> (bindings &amp;body body)</div><div class="sp-definition"><div class="sp-definition-body"><div class="sph3">Details:</div><div class="indent">Execute BODY with some extra methods.<br><br>
+This works similarly to WITH-MOCKED-FUNCTIONS. But defines methods instead of functions.
+The bindings should look like DEFMETHOD definitions without the defmethod symbol.<br><br>
+One particularly useful scenario is to mock up an instance of a class by using eql specializers
+for a local variable.<br><br>For now, it only supports adding new methods, not replacing existing methods, since it doesn't restored the previous method. (mostly because I don't know a good way to extract the specifiers from the definition form.)</div></div></div><br><a name="bytecurry.mocks__fun__with-mocked-functions"></a><div class="sp-lambda-list"><b>Macro with-mocked-functions</b> (bindings &amp;body body)</div><div class="sp-definition"><div class="sp-definition-body"><div class="sph3">Details:</div><div class="indent">Execute BODY with some functions mocked up.<br><br>
+BINDINGS is a list of function bindings, similar to those in FLET or LABELS.
+Before executing BODY, the bindings are used to replace the definitions of functions,
+and after BODY has finished, the original function definitions are restored.<br><br>
+You can use this macro to mock funtions for unit tests. For example, if function A calls
+function B, you can replace the definition of B while testing A, to isolate the test on just
+the behavior of A.<br><br>
+There are two things to note when using this macro:
+1. You can't mock functions in a locked package (such as CL)
+2. The compiler may inline function calls, in which case changing the definition will have   no effect.</div></div></div><br><h3><a name="index"></a>Index of exported symbols</h3><table cellspacing="0" cellpadding="0"><tr><td valign="top" align="right" nowrap><span class="nonlink"><tt><span style="color: #777777">bytecurry.mocks:</span></tt></span></td><td valign="top"><a href="#bytecurry.mocks__fun__with-added-methods"><tt>with-added-methods</tt></a>, macro</td></tr><tr><td valign="top" align="right" nowrap><span class="nonlink"><tt><span style="color: #777777">bytecurry.mocks:</span></tt></span></td><td valign="top"><a href="#bytecurry.mocks__fun__with-mocked-functions"><tt>with-mocked-functions</tt></a>, macro</td></tr></table><div style="height: 10em"></div></div></body></html>
