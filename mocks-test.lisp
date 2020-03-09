@@ -87,4 +87,4 @@
   (with-added-methods ((gtest ((a (eql :foo)))
                               :bar))
     (is (eq :bar (gtest :foo))))
-  (is (eq "Foo" (gtest :foo))))
+  (is (string= "Foo" (gtest :foo))))
