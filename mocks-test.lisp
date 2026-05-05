@@ -47,6 +47,12 @@
     (is (= 10 (plus 1 1))))
   (is (= 2 (plus 1 1))))
 
+(test error-recovery
+  (signals (simple-error)
+    (with-mocked-functions ((foo () (signal 'simple-error "oops")))
+      (foo)))
+  (is (foo) :foo))
+
 (test special-params
   (with-mocked-functions ((sum (&rest args)
                                (declare (ignorable args))
@@ -74,6 +80,7 @@
     (is (eq :bar (gtest :foo)))
     (is (string= "Foo" (gtest 5)))))
 
+;; TODO: test signal in body
 #| ;; Overriding methods isn't supported yet
 (test override-method
   (with-added-methods ((gtest ((a string))

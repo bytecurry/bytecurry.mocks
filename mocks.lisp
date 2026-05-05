@@ -38,8 +38,8 @@ There are two things to note when using this macro:
   (let ((names (mapcar #'%get-binding-names bindings)))
     `(let (,@(mapcar #'%let-expr names))
        ,@(mapcar #'%setf-for-binding bindings)
-       (prog1 (progn ,@body)
-         ,@(mapcar #'%setf-for-original names)))))
+       (unwind-protect (progn ,@body)
+         (progn ,@(mapcar #'%setf-for-original names))))))
 
 
 (defmacro with-added-methods (bindings &body body)
@@ -58,7 +58,8 @@ For now, it only supports adding new methods, not replacing existing methods, si
     `(let (,@(loop for temp-name in temp-names
                 for binding in bindings
                 collect `(,temp-name (defmethod ,@binding))))
-       (prog1 (progn ,@body)
-         ,@(loop for temp-name in temp-names
+       (unwind-protect (progn ,@body)
+         (progn
+           ,@(loop for temp-name in temp-names
               for binding in bindings
-              collect `(remove-method (function ,(first binding)) ,temp-name))))))
+              collect `(remove-method (function ,(first binding)) ,temp-name)))))))
