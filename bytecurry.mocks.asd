@@ -3,8 +3,6 @@
 ;;;; MIT license
 (in-package :asdf-user)
 
-; TODO: generate docs without
-; requireing bytecurry.asdf-ext
 (defsystem #:bytecurry.mocks
     :description "Tools to mock functions for unit tests"
     :author "Thayne McCombs <astrothayne@gmail.com>"
@@ -13,12 +11,7 @@
     ; :defsystem-depends-on (:bytecurry.asdf-ext)
     :serial t
     :components ((:file "package")
-                 (:file "mocks")
-                 ; (:atdoc-html "docs"
-                 ;              :packages :bytecurry.mocks
-                 ;              :single-page-p t
-                 ;              :css :blue-serif))
-                 )
+                 (:file "mocks"))
     :in-order-to ((test-op (test-op :bytecurry.mocks/test))))
 
 (defsystem #:bytecurry.mocks/test

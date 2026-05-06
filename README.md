@@ -34,7 +34,25 @@ There are a couple of things to note when using this macro:
 2.  The compiler may inline function calls, in which case changing the function
     definition will have no effect on the inlined calls.
 
+### Syntax
+```lisp
+(with-mocked-functions (&rest BINDINGS) &body BODY)
+```
+
+
+Where each binding is of the form `(NAME DEF...)` where `NAME` is the name of the
+function to mock, and `DEF` is the definition as would be passed to `lambda`.
+
+
+### Example
+
+```lisp
+(with-mocked-functions ((foo () :foo))
+  (eq (foo) :foo))
+```
+
 ## WITH-ADDED-METHODS<a id="sec-1-2" name="sec-1-2"></a>
+
 
 `with-added-methods` is somewhat similar to `with-mocked-functions`, but allows you to
 define methods for a generic function in a limited scope (again with dynamic scope).
@@ -44,8 +62,25 @@ Since it removes the method afterwards, and `defmethod` replaces any previous me
 the same specifiers, replacing an existing method will effectively remove the original
 method outside the scope of `with-added-methods`.
 
+### Syntax
+
+```lisp
+(with-added-methods (&rest BINDINGS) &body BODY)
+```
+
+Where `BINDINGS` is a sequence of bindings of lists of arguments to pass to `defmethod`.
+
+### Example
+
+```lisp
+(with-added-methods ((example ((a (eql :foo)) (b integer))
+                        (declare (ignorable a))
+                        b + 1))
+  (eq (example :foo 2) 3))
+```
+
 ## More Info<a id="sec-1-3" name="sec-1-3"></a>
 
 For more information see the documentation strings.
 
-The API manual is available [here](http://bytecurry.github.io/bytecurry.mocks/docs/).
+See mocks-test.lisp for examples.

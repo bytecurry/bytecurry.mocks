@@ -25,5 +25,3 @@
    method outside the scope of ~with-added-methods~.
 ** More Info
    For more information see the documentation strings.
-
-   The API manual is available [[http://bytecurry.github.io/bytecurry.mocks/docs/][here]].
