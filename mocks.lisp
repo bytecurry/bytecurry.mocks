@@ -91,7 +91,10 @@ method will be restored. If a new method is added, it will be removed."
                        collect (gensym))))
     `(let (,@(loop for temp-name in temp-names
                 for binding in bindings
-                collect `(,temp-name (list (function ,(first binding)) ,(%find-method-expr binding) (defmethod ,@binding)))))
+                collect `(,temp-name (list (function ,(first binding))
+                                           ,(%find-method-expr binding)
+                                           ; Muffle any redefinition warnings
+                                           (handler-bind ((warning #'muffle-warning)) (defmethod ,@binding))))))
        (unwind-protect (progn ,@body)
          (progn
            ,@(loop for temp-name in temp-names
