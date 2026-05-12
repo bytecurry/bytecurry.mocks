@@ -6,7 +6,7 @@
 (defsystem #:bytecurry.mocks
     :description "Tools to mock functions for unit tests"
     :author "Thayne McCombs <astrothayne@gmail.com>"
-    :version "1.0.0"
+    :version "1.1.0"
     :license "MIT"
     ; :defsystem-depends-on (:bytecurry.asdf-ext)
     :serial t
