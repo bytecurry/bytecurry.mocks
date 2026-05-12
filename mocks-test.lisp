@@ -76,22 +76,25 @@
 (test new-temporary-method
   (with-added-methods ((gtest ((a (eql :foo)))
                               (declare (ignorable a))
-                              :bar))
-    (is (eq :bar (gtest :foo)))
+                              :bar1))
+    (is (eq :bar1 (gtest :foo)))
     (is (string= "Foo" (gtest 5)))))
 
-;; TODO: test signal in body
-#| ;; Overriding methods isn't supported yet
+(test error-recovery
+  (signals (simple-error)
+    (with-added-methods ((gtest ((a string)) (signal 'simple-error "oops")))
+      (gtest "hi")))
+  (is (string= (gtest "bye") "A String")))
+
 (test override-method
   (with-added-methods ((gtest ((a string))
                               a))
     (is (string= "Bar" (gtest "Bar")))
     (is (string= "Test" (gtest "Test"))))
   (is (string= "A String" (gtest "Bar"))))
-|#
 
 (test remove-method-afterwards
   (with-added-methods ((gtest ((a (eql :foo)))
-                              :bar))
-    (is (eq :bar (gtest :foo))))
+                              :bar2))
+    (is (eq :bar2 (gtest :foo))))
   (is (string= "Foo" (gtest :foo))))

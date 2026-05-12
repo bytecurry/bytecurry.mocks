@@ -56,11 +56,9 @@ function to mock, and `DEF` is the definition as would be passed to `lambda`.
 
 `with-added-methods` is somewhat similar to `with-mocked-functions`, but allows you to
 define methods for a generic function in a limited scope (again with dynamic scope).
-It defines new methods before executing the body, and then removes the method after the body.
+It defines new methods before executing the body, and then removes the method after the body,
+or restores the original method, if there was one.
 
-Since it removes the method afterwards, and `defmethod` replaces any previous method with
-the same specifiers, replacing an existing method will effectively remove the original
-method outside the scope of `with-added-methods`.
 
 ### Syntax
 

@@ -42,6 +42,39 @@ There are two things to note when using this macro:
          (progn ,@(mapcar #'%setf-for-original names))))))
 
 
+(defun %find-method-expr (binding)
+  (declare (list binding))
+  "Generate expression for finding an existing method for a binding"
+  (labels ((get-specializers (args)
+             (declare (list args))
+             "Convert method argument list to list of specializers"
+             (loop for arg in args
+                   ; Exit once we find the first keyword that starts with "&"
+                   until (and (symbolp arg) (char= (char (symbol-name arg) 0) #\&))
+                   ; If the argument is a cons, the second argument is the speicalizer,
+                   ; otherwise the specializer is t
+                   if (consp arg) collect (second arg)
+                   else collect t))
+           (build-spec (args)
+             (declare (list args))
+             "Return a list containing the qualifiers and specializers as lists"
+             (loop for arg in args
+                   if (listp arg) return `(',qualifiers ',(get-specializers arg))
+                   else collect arg into qualifiers)))
+    (destructuring-bind (name &rest args) binding
+      `(find-method (function ,name) ,.(build-spec args) nil))))
+
+
+
+
+
+; (defun %method-exprs (binding)
+;   (declare (list binding))
+;   "Create an expression for a pair that contains the old definition of the method
+; and a new defition of the method, defined using defmethod on binding.
+; The old definition may be nil if there was no method for those qualifiers before."
+;   (
+
 (defmacro with-added-methods (bindings &body body)
   (declare (list bindings))
   "Execute BODY with some extra methods.
@@ -52,14 +85,19 @@ The bindings should look like DEFMETHOD definitions without the defmethod symbol
 One particularly useful scenario is to mock up an instance of a class by using eql specializers
 for a local variable.
 
-For now, it only supports adding new methods, not replacing existing methods, since it doesn't restored the previous method. (mostly because I don't know a good way to extract the specifiers from the definition form.)"
+This restores the state of the methods to what it was before calling. If a method is overridden, then the original
+method will be restored. If a new method is added, it will be removed."
   (let ((temp-names (loop for binding in bindings
                        collect (gensym))))
     `(let (,@(loop for temp-name in temp-names
                 for binding in bindings
-                collect `(,temp-name (defmethod ,@binding))))
+                collect `(,temp-name (list (function ,(first binding)) ,(%find-method-expr binding) (defmethod ,@binding)))))
        (unwind-protect (progn ,@body)
          (progn
            ,@(loop for temp-name in temp-names
-              for binding in bindings
-              collect `(remove-method (function ,(first binding)) ,temp-name)))))))
+              collect `(destructuring-bind (f orig new) ,temp-name
+                         (if orig
+                           ; Replace the method with the old version
+                           (add-method f orig)
+                           ; Otherwise, remove the new method we added
+                           (remove-method f new)))))))))
